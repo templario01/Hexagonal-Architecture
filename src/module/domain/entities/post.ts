@@ -10,4 +10,13 @@ export class Post {
     this.title = title
     this.authorId = authorId
   }
+
+  properties() {
+    return {
+      id: this.id,
+      content: this.content,
+      title: this.title,
+      authorId: this.authorId 
+    }
+  }
 }

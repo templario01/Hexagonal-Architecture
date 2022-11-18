@@ -1,16 +1,18 @@
-import { plainToInstance } from 'class-transformer'
 import { Post } from '../domain/entities/post'
+import { PostRepository } from '../domain/repositories/post.repository'
 import { prisma } from './prisma/prisma'
 
-export class PostInfrastucture {
-  async save(): Promise<Post> {
-    const { id, authorId, content, title } = await prisma.post.create({
+export class PostInfrastucture implements PostRepository {
+  async save(post: Post): Promise<Post> {
+    const { properties } = post
+    await prisma.post.create({
       data: {
-        title: '',
-        authorId: 1,
+        title: properties().title,
+        content: properties().content,
+        authorId: properties().authorId,
       },
     })
 
-    return new Post(id, title, authorId, content ?? undefined)
+    return post
   }
 }
