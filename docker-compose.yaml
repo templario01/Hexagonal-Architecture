@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:14.1-alpine
+    container_name: postgres
+    restart: always
+    ports:
+      - 5001:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=db_prueba
+    networks:
+      - net-template
+  rabbitmq2:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq2
+    restart: always
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - net-template
+
+
+volumes:
+  pgdata:
+
+networks:
+  net-template:
